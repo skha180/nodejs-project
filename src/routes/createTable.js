@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models/db");
 
-// CREATE USERS TABLE FROM A ROUTE
-router.get("/create-table", async (req, res) => {
+// CREATE USERS TABLE
+router.get("/createTable", async (req, res) => {
   try {
     await db.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -17,7 +17,7 @@ router.get("/create-table", async (req, res) => {
     `);
     res.send("Users table created successfully!");
   } catch (err) {
-    res.send("Error: " + err.message);
+    res.send("ERROR: " + err.message);
   }
 });
 
