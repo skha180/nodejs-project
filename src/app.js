@@ -31,6 +31,9 @@ app.use("/", dbtestRoute);
 const createTableRoute = require("./routes/createTable");
 app.use("/", createTableRoute);
 
+const createTableRoute = require("./routes/createTable");
+app.use("/", createTableRoute);
+
 
 // HOME ROUTE
 app.get("/", (req, res) => {

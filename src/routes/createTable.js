@@ -2,7 +2,12 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models/db");
 
-// CREATE USERS TABLE
+// TEST ROUTE FIRST!
+router.get("/test-route", (req, res) => {
+  res.send("createTable.js is working!");
+});
+
+// CREATE USERS TABLE ROUTE
 router.get("/createTable", async (req, res) => {
   try {
     await db.query(`
