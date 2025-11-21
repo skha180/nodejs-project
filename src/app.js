@@ -24,16 +24,11 @@ app.use(express.static(path.join(__dirname, '../public')));
 const authRoutes = require("./routes/auth");
 app.use("/", authRoutes);
 
-// ADD DB TEST ROUTE HERE 👇
 const dbtestRoute = require("./routes/dbtest");
 app.use("/", dbtestRoute);
 
-const createTableRoute = require("./routes/createTable");
+const createTableRoute = require("./routes/createTable");  // ✔ ONLY ONCE
 app.use("/", createTableRoute);
-
-const createTableRoute = require("./routes/createTable");
-app.use("/", createTableRoute);
-
 
 // HOME ROUTE
 app.get("/", (req, res) => {
