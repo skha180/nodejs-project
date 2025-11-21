@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= title || "My Node App" %></title>
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F4C5C',   // teal-blue
+            darkbg: '#0a192f',   // dark theme background
+            lighttext: '#ccd6f6', // light text
+            accent: '#64ffda'     // neon teal
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+
+<body class="bg-darkbg text-lighttext min-h-screen">
+
+  <!-- NAVBAR -->
+  <nav class="bg-primary p-4 flex justify-between items-center shadow-lg">
+    <h1 class="text-xl font-bold"><i class="fa-solid fa-laptop-code"></i> MyApp</h1>
+    <ul class="flex gap-6">
+      <li><a href="/" class="hover:text-accent"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="/login" class="hover:text-accent"><i class="fa-solid fa-right-to-bracket"></i> Login</a></li>
+      <li><a href="/register" class="hover:text-accent"><i class="fa-solid fa-user-plus"></i> Register</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE CONTENT -->
+  <main class="container mx-auto py-10 px-4">
+    <%- body %>  <!-- This will inject each page here -->
+  </main>
+
+</body>
+</html>

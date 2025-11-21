@@ -3,6 +3,10 @@ const session = require('express-session');
 const path = require('path');
 require('dotenv').config();
 
+const authRoutes = require("./routes/auth");
+app.use("/", authRoutes);
+
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
