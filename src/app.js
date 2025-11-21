@@ -24,13 +24,20 @@ app.use(express.static(path.join(__dirname, '../public')));
 const authRoutes = require("./routes/auth");
 app.use("/", authRoutes);
 
+// ADD DB TEST ROUTE HERE 👇
+const dbtestRoute = require("./routes/dbtest");
+app.use("/", dbtestRoute);
+
+const createTableRoute = require("./routes/createTable");
+app.use("/", createTableRoute);
+
+
 // HOME ROUTE
 app.get("/", (req, res) => {
     res.render("home");
 });
 
-
-// ⚠️ PUT THIS AT THE BOTTOM — GLOBAL ERROR HANDLER
+// ⚠️ GLOBAL ERROR HANDLER (MUST BE AT BOTTOM)
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.send("Error: " + err.message);
