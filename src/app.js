@@ -44,6 +44,13 @@ app.use("/", adminRoute);
 app.use("/", createMessagesTable);
 
 
+const roleRoute = require("./routes/addRoleColumn");
+app.use("/", roleRoute);
+
+const makeAdminRoute = require("./routes/makeAdmin");
+app.use("/", makeAdminRoute);
+
+
 //  GLOBAL ERROR HANDLER
 app.use((err, req, res, next) => {
   console.error(err.stack);

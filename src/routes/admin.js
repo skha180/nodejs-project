@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models/db"); // Make sure db.js is correct
+const isAdmin = require("../middleware/isAdmin");
+
 
 // 📌 1. READ – Show all users
 router.get("/admin", async (req, res) => {
@@ -47,3 +49,13 @@ router.post("/admin/edit/:id", async (req, res) => {
 });
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
