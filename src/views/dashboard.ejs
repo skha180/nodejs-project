@@ -1,2 +1,7 @@
-<h1>Dashboard Works!</h1>
-<p>Username: <%= username %></p>
+<%- include("layout", { 
+  title: "Dashboard",
+  body: `
+    <h1>Dashboard Works!!!</h1>
+    <p>Welcome <%= username %></p>
+  `
+}) %>
