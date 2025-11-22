@@ -41,5 +41,11 @@ app.use((err, req, res, next) => {
   res.send("Error: " + err.message);
 });
 
+app.use((err, req, res, next) => {
+  console.error("EJS ERROR in file:", err);
+  res.send("EJS ERROR: " + err.message);
+});
+
+
 // EXPORT APP
 module.exports = app;
