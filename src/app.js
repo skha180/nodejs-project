@@ -20,14 +20,14 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, '../public')));
 
-// ROUTES (very important)
+// ROUTES 
 const authRoutes = require("./routes/auth");
 app.use("/", authRoutes);
 
 const dbtestRoute = require("./routes/dbtest");
 app.use("/", dbtestRoute);
 
-const createTableRoute = require("./routes/createTable");  // ✔ ONLY ONCE
+const createTableRoute = require("./routes/createTable");  // i used this only once to create table in db 
 app.use("/", createTableRoute);
 
 // HOME ROUTE
@@ -35,7 +35,16 @@ app.get("/", (req, res) => {
     res.render("home");
 });
 
-// ⚠️ GLOBAL ERROR HANDLER (MUST BE AT BOTTOM)
+const contactRoute = require("./routes/contact");
+const adminRoute = require("./routes/admin");
+const createMessagesTable = require("./routes/createMessagesTable");
+
+app.use("/", contactRoute);
+app.use("/", adminRoute);
+app.use("/", createMessagesTable);
+
+
+//  GLOBAL ERROR HANDLER
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.send("Error: " + err.message);

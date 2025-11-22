@@ -17,27 +17,27 @@ router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    // 1️⃣ VALIDATION — check empty fields
+    // 1️VALIDATION — check empty fields
     if (!username || !email || !password) {
       return res.send("All fields are required!");
     }
 
-    // 2️⃣ CHECK IF USER EXISTS
+    // 2️ CHECK IF USER EXISTS
     const [existing] = await db.query("SELECT * FROM users WHERE email = ?", [email]);
     if (existing.length > 0) {
       return res.send("User already exists. Try another email.");
     }
 
-    // 3️⃣ HASH PASSWORD
+    // 3️ HASH PASSWORD
     const hashedPassword = await bcrypt.hash(password, 10);  // 10 = salt rounds
 
-    // 4️⃣ INSERT INTO DATABASE
+    // 4️ INSERT INTO DATABASE
     await db.query(
       "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
       [username, email, hashedPassword]
     );
 
-    // 5️⃣ SUCCESS
+    // 5️ SUCCESS
     res.send("Registration successful! You can now <a href='/login'>login</a>.");
   } catch (err) {
     console.error(err);

@@ -1,0 +1,18 @@
+<%- include("layout", { 
+  title: "Admin Dashboard",
+  body: `
+    <h2 class="text-3xl font-bold mb-4">All Users</h2>
+    <table class="table-auto w-full bg-gray-900 rounded-lg">
+      <tr class="bg-primary text-lighttext">
+        <th>ID</th><th>Username</th><th>Email</th>
+      </tr>
+      <% users.forEach(user => { %>
+        <tr class="border-b border-gray-700">
+          <td><%= user.id %></td>
+          <td><%= user.username %></td>
+          <td><%= user.email %></td>
+        </tr>
+      <% }) %>
+    </table>
+  `
+}) %>
