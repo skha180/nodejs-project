@@ -1,16 +1,13 @@
 <%- include("layout", { 
   title: "Dashboard",
   body: `
-    <div class="text-center p-8 bg-gray-900 rounded-xl shadow-lg">
-      <h1 class="text-4xl font-bold mb-4">
-        Welcome, <span class="text-accent"><%= username %></span> 👋
+    <div class='text-center p-8 bg-gray-900 rounded-xl shadow-lg'>
+      <h1 class='text-4xl font-bold mb-4'>
+        Welcome, <span class='text-accent'><%= username %></span> 👋
       </h1>
-
-      <p class="text-lg mb-6">You are now logged in successfully!</p>
-
-      <a href="/logout" 
-         class="bg-primary text-lighttext px-5 py-3 rounded-lg hover:bg-accent transition">
-         <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+      <p class='text-lg mb-6'>You are now logged in successfully!</p>
+      <a href='/logout' class='bg-primary text-lighttext px-5 py-3 rounded-lg hover:bg-accent transition'>
+        <i class='fa-solid fa-arrow-right-from-bracket'></i> Logout
       </a>
     </div>
   `
