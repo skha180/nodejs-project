@@ -45,8 +45,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
-const bcrypt = require("bcrypt");
+// logic for login
 
 // LOGIN PAGE
 router.get("/login", (req, res) => {
