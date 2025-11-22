@@ -1,7 +1,73 @@
-<%- include("layout", {
-  title: "Dashboard",
-  body: `
-    <h1>Dashboard Works NOW</h1>
-    <p>Username: <%= username %></p>
-  `
-}) %>
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Custom Theme -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F4C5C',    // Dark teal
+            darkbg: '#0a192f',     // Dark background
+            lighttext: '#ccd6f6',  // Light text color
+            accent: '#64ffda'      // Neon teal
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body class="bg-darkbg text-lighttext min-h-screen">
+
+  <!-- NAVBAR -->
+  <nav class="bg-primary p-4 flex justify-between items-center shadow-lg">
+    <h1 class="text-xl font-bold"><i class="fa-solid fa-laptop-code"></i> MyApp</h1>
+    
+    <ul class="flex gap-6">
+      <li><a href="/" class="hover:text-accent"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a href="/logout" class="hover:text-red-400"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="p-8">
+    <h1 class="text-4xl font-bold mb-6">
+      Welcome, <span class="text-accent"><%= username %></span> 👋
+    </h1>
+
+    <!-- Dashboard Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <div class="bg-gray-800 p-6 rounded-xl shadow-lg text-center">
+        <i class="fa-solid fa-user fa-2x mb-4"></i>
+        <h3 class="text-xl font-semibold">User Profile</h3>
+        <p class="text-gray-400">Manage your account</p>
+      </div>
+
+      <div class="bg-gray-800 p-6 rounded-xl shadow-lg text-center">
+        <i class="fa-solid fa-chart-line fa-2x mb-4"></i>
+        <h3 class="text-xl font-semibold">Statistics</h3>
+        <p class="text-gray-400">Analytics & Reports</p>
+      </div>
+
+      <div class="bg-gray-800 p-6 rounded-xl shadow-lg text-center">
+        <i class="fa-solid fa-gear fa-2x mb-4"></i>
+        <h3 class="text-xl font-semibold">Settings</h3>
+        <p class="text-gray-400">Customize the system</p>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
