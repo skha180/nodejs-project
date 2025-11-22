@@ -1,0 +1,29 @@
+<%- include("../layout", { title: "Login", body: `
+  <div class="max-w-md mx-auto bg-gray-800 p-8 rounded-xl shadow-lg">
+
+    <h2 class="text-3xl font-bold mb-6 text-center">
+      <i class="fa-solid fa-right-to-bracket"></i> Login
+    </h2>
+
+    <form action="/login" method="POST" class="space-y-4">
+
+      <input type="email" name="email" required
+        placeholder="Email"
+        class="w-full p-3 bg-darkbg border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent" />
+
+      <input type="password" name="password" required
+        placeholder="Password"
+        class="w-full p-3 bg-darkbg border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent" />
+
+      <button class="w-full bg-accent text-darkbg py-3 rounded-lg font-semibold hover:bg-lighttext transition">
+        Login <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </form>
+
+    <p class="mt-6 text-center text-gray-300">
+      Don't have an account? 
+      <a href="/register" class="text-accent hover:underline">Register here</a>
+    </p>
+
+  </div>
+` }) %>
