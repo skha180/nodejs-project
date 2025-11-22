@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit User</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F4C5C',
+            darkbg: '#0a192f',
+            lighttext: '#ccd6f6',
+            accent: '#64ffda'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-darkbg text-lighttext min-h-screen">
+  <div class="max-w-md mx-auto p-6 bg-gray-900 mt-10 rounded-xl shadow-lg">
+    <h2 class="text-3xl font-bold mb-4">Edit User</h2>
+
+    <form action="/admin/edit/<%= user.id %>" method="POST" class="space-y-4">
+      <input type="text" name="username" value="<%= user.username %>" 
+        class="w-full p-2 bg-darkbg border border-gray-600 rounded-md" required />
+
+      <input type="email" name="email" value="<%= user.email %>" 
+        class="w-full p-2 bg-darkbg border border-gray-600 rounded-md" required />
+
+      <button class="bg-primary text-lighttext px-4 py-2 rounded-lg hover:bg-accent transition">
+        Save Changes
+      </button>
+    </form>
+  </div>
+</body>
+</html>
