@@ -1,72 +1,63 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models/db");
-const isAdmin = require("../middleware/isAdmin");  // 🔐 Protect admin route
+const isAdmin = require("../middleware/isAdmin");
 
-// =======================
-// 1. Admin Dashboard (READ USERS)
-// =======================
+// Admin Dashboard
 router.get("/admin", isAdmin, async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM users");
-    console.log("Users loaded:", rows);
+    // fetch users
+    const [rows, fields] = await db.query("SELECT * FROM users");
+    console.log("DEBUG: users fetched:", rows);
 
+    // render admin view
     res.render("admin", {
       title: "Admin Panel",
-      username: req.session.user.username,
-      users: rows // <-- IMPORTANT FIX
+      username: req.session.user?.username || "Admin",
+      users: rows // must be rows
     });
 
   } catch (err) {
-    res.send("Error: " + err.message);
+    console.error("ERROR:", err);
+    res.send("Server error: " + err.message);
   }
 });
 
-// =======================
-// 2. DELETE USER
-// =======================
+// Delete user
 router.get("/admin/delete/:id", isAdmin, async (req, res) => {
   try {
     await db.query("DELETE FROM users WHERE id = ?", [req.params.id]);
     res.redirect("/admin");
   } catch (err) {
-    res.send("Error: " + err.message);
+    console.error("ERROR:", err);
+    res.send("Server error: " + err.message);
   }
 });
 
-// =======================
-// 3. EDIT USER FORM
-// =======================
+// Edit user form
 router.get("/admin/edit/:id", isAdmin, async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM users WHERE id = ?", [req.params.id]);
-
-    res.render("editUser", {
-      title: "Edit User",
-      user: rows[0]
-    });
-
+    if (!rows[0]) return res.send("User not found");
+    res.render("editUser", { title: "Edit User", user: rows[0] });
   } catch (err) {
-    res.send("Error: " + err.message);
+    console.error("ERROR:", err);
+    res.send("Server error: " + err.message);
   }
 });
 
-// =======================
-// 4. UPDATE USER (POST)
-// =======================
+// Update user (POST)
 router.post("/admin/edit/:id", isAdmin, async (req, res) => {
   const { username, email, role } = req.body;
-
   try {
     await db.query(
       "UPDATE users SET username = ?, email = ?, role = ? WHERE id = ?",
       [username, email, role || "user", req.params.id]
     );
-
     res.redirect("/admin");
-
   } catch (err) {
-    res.send("Error: " + err.message);
+    console.error("ERROR:", err);
+    res.send("Server error: " + err.message);
   }
 });
 
