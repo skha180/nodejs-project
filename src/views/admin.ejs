@@ -40,12 +40,12 @@
     </ul>
   </nav>
 
-  <!-- PAGE CONTENT -->
   <main class="container mx-auto py-10 px-4">
     <h2 class="text-4xl font-bold mb-6 text-center">Admin Dashboard</h2>
 
     <!-- USERS TABLE -->
-    <div class="bg-gray-900 p-6 rounded-xl shadow-lg overflow-x-auto">
+    <div class="bg-gray-900 p-6 rounded-xl shadow-lg overflow-x-auto mb-10">
+      <h3 class="text-2xl font-bold mb-4">Users</h3>
       <table class="table-auto w-full">
         <thead class="bg-primary text-lighttext">
           <tr>
@@ -82,7 +82,39 @@
         </tbody>
       </table>
     </div>
-  </main>
 
+    <!-- MESSAGES TABLE -->
+    <div class="bg-gray-900 p-6 rounded-xl shadow-lg overflow-x-auto">
+      <h3 class="text-2xl font-bold mb-4">Messages Dashboard</h3>
+      <table class="table-auto w-full">
+        <thead class="bg-primary text-lighttext">
+          <tr>
+            <th class="p-2">ID</th>
+            <th class="p-2">Name</th>
+            <th class="p-2">Email</th>
+            <th class="p-2">Message</th>
+            <th class="p-2">Sent At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (messages && messages.length > 0) { %>
+            <% messages.forEach(msg => { %>
+              <tr class="border-b border-gray-700">
+                <td class="p-2"><%= msg.id %></td>
+                <td class="p-2"><%= msg.name %></td>
+                <td class="p-2"><%= msg.email %></td>
+                <td class="p-2"><%= msg.message %></td>
+                <td class="p-2"><%= new Date(msg.created_at).toLocaleString() %></td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr>
+              <td colspan="5" class="text-center p-4">No messages yet.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </main>
 </body>
 </html>

@@ -1,22 +1,25 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models/db");
-const { isAdmin } = require("./auth"); // use middleware from auth.js
+const { isAdmin } = require("./auth"); // middleware from auth.js
 
 // =======================
-// 1. Admin Dashboard (READ USERS)
+// Admin Dashboard (Users + Messages)
 // =======================
 router.get("/admin", isAdmin, async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM users");
-    console.log("DEBUG: users fetched:", rows);
+    // Fetch all users
+    const [users] = await db.query("SELECT * FROM users");
+
+    // Fetch all messages
+    const [messages] = await db.query("SELECT * FROM messages ORDER BY created_at DESC");
 
     res.render("admin", {
       title: "Admin Panel",
       username: req.session.user?.username || "Admin",
-      users: rows
+      users,
+      messages
     });
-
   } catch (err) {
     console.error("ERROR:", err);
     res.send("Server error: " + err.message);
@@ -24,7 +27,7 @@ router.get("/admin", isAdmin, async (req, res) => {
 });
 
 // =======================
-// 2. DELETE USER
+// DELETE USER
 // =======================
 router.get("/admin/delete/:id", isAdmin, async (req, res) => {
   try {
@@ -37,7 +40,7 @@ router.get("/admin/delete/:id", isAdmin, async (req, res) => {
 });
 
 // =======================
-// 3. EDIT USER FORM
+// EDIT USER FORM
 // =======================
 router.get("/admin/edit/:id", isAdmin, async (req, res) => {
   try {
@@ -51,7 +54,7 @@ router.get("/admin/edit/:id", isAdmin, async (req, res) => {
 });
 
 // =======================
-// 4. UPDATE USER (POST)
+// UPDATE USER (POST)
 // =======================
 router.post("/admin/edit/:id", isAdmin, async (req, res) => {
   const { username, email, role } = req.body;
