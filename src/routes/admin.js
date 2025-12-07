@@ -1,20 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../models/db");
-const isAdmin = require("../middleware/isAdmin");
+const { isAdmin } = require("./auth"); // use middleware from auth.js
 
-// Admin Dashboard
+// =======================
+// 1. Admin Dashboard (READ USERS)
+// =======================
 router.get("/admin", isAdmin, async (req, res) => {
   try {
-    // fetch users
-    const [rows, fields] = await db.query("SELECT * FROM users");
+    const [rows] = await db.query("SELECT * FROM users");
     console.log("DEBUG: users fetched:", rows);
 
-    // render admin view
     res.render("admin", {
       title: "Admin Panel",
       username: req.session.user?.username || "Admin",
-      users: rows // must be rows
+      users: rows
     });
 
   } catch (err) {
@@ -23,7 +23,9 @@ router.get("/admin", isAdmin, async (req, res) => {
   }
 });
 
-// Delete user
+// =======================
+// 2. DELETE USER
+// =======================
 router.get("/admin/delete/:id", isAdmin, async (req, res) => {
   try {
     await db.query("DELETE FROM users WHERE id = ?", [req.params.id]);
@@ -34,7 +36,9 @@ router.get("/admin/delete/:id", isAdmin, async (req, res) => {
   }
 });
 
-// Edit user form
+// =======================
+// 3. EDIT USER FORM
+// =======================
 router.get("/admin/edit/:id", isAdmin, async (req, res) => {
   try {
     const [rows] = await db.query("SELECT * FROM users WHERE id = ?", [req.params.id]);
@@ -46,7 +50,9 @@ router.get("/admin/edit/:id", isAdmin, async (req, res) => {
   }
 });
 
-// Update user (POST)
+// =======================
+// 4. UPDATE USER (POST)
+// =======================
 router.post("/admin/edit/:id", isAdmin, async (req, res) => {
   const { username, email, role } = req.body;
   try {

@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
     const validPass = await bcrypt.compare(password, user.password);
     if (!validPass) return res.send("Incorrect password.");
 
-    // STORE FULL SESSION (NOW WITH ROLE)
+    // STORE FULL SESSION
     req.session.user = {
       id: user.id,
       username: user.username,
@@ -70,10 +70,7 @@ router.post("/login", async (req, res) => {
     };
 
     // Redirect based on ROLE
-    if (user.role === "admin") {
-      return res.redirect("/admin");
-    }
-
+    if (user.role === "admin") return res.redirect("/admin");
     res.redirect("/dashboard");
   } catch (err) {
     res.send("ERROR: " + err.message);
@@ -105,14 +102,5 @@ router.get("/dashboard", isLoggedIn, (req, res) => {
   });
 });
 
-// =========================
-// ADMIN PAGE (Only Admin)
-// =========================
-router.get("/admin", isAdmin, (req, res) => {
-  res.render("admin", { 
-    title: "Admin Panel",
-    username: req.session.user.username 
-  });
-});
-
 module.exports = router;
+module.exports.isAdmin = isAdmin; // export middleware for admin routes

@@ -6,53 +6,59 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware
+// Middleware to parse requests
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// (Recommended) Use for production security
+// (Optional) For production security
 // const helmet = require("helmet");
 // app.use(helmet());
 
+// =====================
+// SESSION SETUP
+// =====================
 app.use(session({
-  secret: 'mysecretkey',
+  secret: process.env.SESSION_SECRET || 'mysecretkey',
   resave: false,
   saveUninitialized: false,
-  // store: new MySQLStore(...) // can be added later
+  cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
 }));
 
-// EJS & static folder
+// =====================
+// EJS & Static Files
+// =====================
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, '../public')));
+app.set('views', path.join(__dirname, 'views')); // views folder inside src/
+app.use(express.static(path.join(__dirname, '../public'))); // public folder outside src
 
-// ===================
+// =====================
 // ROUTES
-// ===================
+// =====================
 
-// AUTH ROUTES (must be first)
+// AUTH ROUTES (login, register)
 const authRoutes = require("./routes/auth");
 app.use("/", authRoutes);
 
 // HOME ROUTE
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("home", { title: "Home" });
 });
+
+// CONTACT (CRUD user side)
+const contactRoute = require("./routes/contact");
+app.use("/", contactRoute);
 
 // DB TEST ROUTE
 const dbtestRoute = require("./routes/dbtest");
 app.use("/", dbtestRoute);
 
-// CONTACT (CRUD - user side)
-const contactRoute = require("./routes/contact");
-app.use("/", contactRoute);
+// ADMIN ROUTES (after auth)
+const adminRoutes = require("./routes/admin");
+app.use("/", adminRoutes);
 
-// ADMIN (must come after contact + auth)
-const adminRoute = require("./routes/admin");
-app.use("/", adminRoute);
-
-// ========== ONE-TIME ROUTES ==========
-// ⚠️ USE ONLY ONCE then REMOVE from app.js!
+// =====================
+// ONE-TIME SETUP ROUTES
+// =====================
 /*
 const createTableRoute = require("./routes/createTable");
 app.use("/", createTableRoute);
@@ -66,13 +72,16 @@ app.use("/", roleRoute);
 const makeAdminRoute = require("./routes/makeAdmin");
 app.use("/", makeAdminRoute);
 */
-// ====================================
 
-// ⚠️ GLOBAL ERROR HANDLER (ONLY ONCE!)
+// =====================
+// GLOBAL ERROR HANDLER
+// =====================
 app.use((err, req, res, next) => {
   console.error("SERVER ERROR:", err);
   res.status(500).send("Server Error: " + err.message);
 });
 
+// =====================
 // EXPORT APP
+// =====================
 module.exports = app;
