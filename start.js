@@ -1,5 +1,5 @@
 const app = require("./src/app");
-const { ensureAdminExists } = require("./dataHandler");
+const dataHandler = require('./src/models/dataHandler');
 
 const PORT = process.env.PORT || 4207;
 
