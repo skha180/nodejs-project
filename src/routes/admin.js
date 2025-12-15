@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../models/db");
+const { readUsers, deleteUser, readMessages, deleteMessage } = require("../models/dataHandler");
 const { isAdmin } = require("./auth"); // middleware from auth.js
 
 // =======================
@@ -9,10 +9,10 @@ const { isAdmin } = require("./auth"); // middleware from auth.js
 router.get("/admin", isAdmin, async (req, res) => {
   try {
     // Fetch all users
-    const [users] = await db.query("SELECT * FROM users");
+    const users = readUsers();
 
     // Fetch all messages
-    const [messages] = await db.query("SELECT * FROM messages ORDER BY created_at DESC");
+    const messages = readMessages();
 
     res.render("admin", {
       title: "Admin Panel",
@@ -31,7 +31,10 @@ router.get("/admin", isAdmin, async (req, res) => {
 // =======================
 router.get("/admin/delete/:id", isAdmin, async (req, res) => {
   try {
-    await db.query("DELETE FROM users WHERE id = ?", [req.params.id]);
+    // Remove user from users.txt
+    const users = readUsers();
+    const updatedUsers = users.filter(user => user.id !== parseInt(req.params.id));
+    writeUsers(updatedUsers);
     res.redirect("/admin");
   } catch (err) {
     console.error("ERROR:", err);
@@ -44,9 +47,10 @@ router.get("/admin/delete/:id", isAdmin, async (req, res) => {
 // =======================
 router.get("/admin/edit/:id", isAdmin, async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM users WHERE id = ?", [req.params.id]);
-    if (!rows[0]) return res.send("User not found");
-    res.render("editUser", { title: "Edit User", user: rows[0] });
+    const users = readUsers();
+    const user = users.find(u => u.id === parseInt(req.params.id));
+    if (!user) return res.send("User not found");
+    res.render("editUser", { title: "Edit User", user });
   } catch (err) {
     console.error("ERROR:", err);
     res.send("Server error: " + err.message);
@@ -59,10 +63,27 @@ router.get("/admin/edit/:id", isAdmin, async (req, res) => {
 router.post("/admin/edit/:id", isAdmin, async (req, res) => {
   const { username, email, role } = req.body;
   try {
-    await db.query(
-      "UPDATE users SET username = ?, email = ?, role = ? WHERE id = ?",
-      [username, email, role || "user", req.params.id]
-    );
+    const users = readUsers();
+    const updatedUsers = users.map(user => {
+      if (user.id === parseInt(req.params.id)) {
+        return { ...user, username, email, role: role || "user" };
+      }
+      return user;
+    });
+    writeUsers(updatedUsers);
+    res.redirect("/admin");
+  } catch (err) {
+    console.error("ERROR:", err);
+    res.send("Server error: " + err.message);
+  }
+});
+
+// =======================
+// DELETE MESSAGE
+// =======================
+router.get("/admin/delete/message/:id", isAdmin, (req, res) => {
+  try {
+    deleteMessage(req.params.id);
     res.redirect("/admin");
   } catch (err) {
     console.error("ERROR:", err);
