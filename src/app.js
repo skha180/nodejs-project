@@ -49,8 +49,6 @@ const contactRoute = require("./routes/contact");
 app.use("/", contactRoute);
 
 // DB TEST ROUTE
-const dbtestRoute = require("./routes/dbtest");
-app.use("/", dbtestRoute);
 
 // ADMIN ROUTES (after auth)
 const adminRoutes = require("./routes/admin");
