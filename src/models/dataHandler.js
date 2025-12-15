@@ -5,8 +5,8 @@ const bcrypt = require("bcrypt");
 // =======================
 // FILE PATHS
 // =======================
-const usersFile = path.join(__dirname, "../data/users.txt");
-const messagesFile = path.join(__dirname, "../data/messages.txt");
+const usersFile = path.join(__dirname, "../../data/users.txt");
+const messagesFile = path.join(__dirname, "../../data/messages.txt");
 
 // =======================
 // USERS HELPERS
