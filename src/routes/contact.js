@@ -1,24 +1,37 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../models/db");
+const { readMessages, writeMessages } = require("../models/dataHandler");
 
-// Show page
+// =======================
+// CONTACT PAGE (GET)
+// =======================
 router.get("/contact", (req, res) => {
-  res.render("contact");
+  res.render("contact", { title: "Contact" });
 });
 
-// Save to database
-router.post("/contact", async (req, res) => {
+// =======================
+// SAVE MESSAGE (POST)
+// =======================
+router.post("/contact", (req, res) => {
   const { name, email, message } = req.body;
-  try {
-    await db.query(
-      "INSERT INTO messages (name, email, message) VALUES (?, ?, ?)",
-      [name, email, message]
-    );
-    res.send("Message sent successfully!");
-  } catch (err) {
-    res.send("Error: " + err.message);
+
+  if (!name || !email || !message) {
+    return res.send("All fields are required!");
   }
+
+  const messages = readMessages();
+
+  messages.push({
+    id: Date.now(),
+    name,
+    email,
+    message,
+    created_at: new Date().toISOString()
+  });
+
+  writeMessages(messages);
+
+  res.send("✅ Message sent successfully!");
 });
 
 module.exports = router;
